@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+
+mkdir -p /{config,data/storage}
+
+if [ ! -f "/config/config.js" ]; then
+    cp /defaults/config.js /config/config.js
+    sed -i "s|{{TIMEZONE}}|"${TIMEZONE}"|g" /config/config.js
+fi
+
+ln -sf /config/config.js /app/delta/config.js
+rm -rf /app/delta/storage
+ln -sf /data/storage /app/delta/storage
+
+# permissions
+chown -R abc:abc \
+	/config \
+    /data
